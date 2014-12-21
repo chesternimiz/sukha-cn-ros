@@ -9,9 +9,11 @@ hello_world::hello_world(std::string const& name) : TaskContext(name)
 
         //add output port to hello_world component
         this->ports()->addPort("out_port", outPort);
-        outPort.createStream(rtt_roscomm::topic("/chatter"));
+        outPort.createStream(rtt_roscomm::topic("/chatter_write"));
 
-        std::cout << "hello_world constructed !" <<std::endl;
+        //add input port to component
+        this->ports()->addPort("in_port", inPort);
+        inPort.createStream(rtt_roscomm::topic("/chatter"));
 }
 
 bool hello_world::configureHook()
@@ -29,10 +31,15 @@ bool hello_world::startHook()
 void hello_world::updateHook()
 {
         //say hello world to ros node every period.
-        std_msgs::String val;
-        val.data = "hello World, orocos.";
-        outPort.write( val );
-        std::cout << "hello_world executes updateHook !" <<std::endl;
+        std_msgs::String write_val;
+        write_val.data = "hello World, orocos.";
+        outPort.write( write_val );
+
+        //listen to ros node every period.
+        std_msgs::String read_val;
+        if (inPort.read(read_val) == RTT::NewData) {
+                std::cout << read_val.data <<std::endl;
+        }
 }
 
 void hello_world::stopHook() 
