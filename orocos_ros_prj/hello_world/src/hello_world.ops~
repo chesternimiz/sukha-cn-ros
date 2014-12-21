@@ -1,0 +1,10 @@
+require("print")
+import("rtt_std_msgs")
+import("hello_world")
+
+print.ln("Script imported hello_world package:")
+displayComponentTypes()
+
+loadComponent("hello_world_task", "hello_world")
+print.ln("Script created Hello Component with period: " + hello_world_task.getPeriod() )
+
