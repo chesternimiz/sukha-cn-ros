@@ -2,41 +2,47 @@
 #include <rtt/Component.hpp>
 #include <iostream>
 
-hello_world::hello_world(std::string const& name) : TaskContext(name){
-  //set the priority and period
-  this->setActivity( new RTT::Activity(0, 0.001));
+hello_world::hello_world(std::string const& name) : TaskContext(name)
+{
+        //set the priority and period
+        this->setActivity( new RTT::Activity(0, 0.001));
 
-  //add output port to hello_world component
-  this->ports()->addPort("out_port", outPort);
-  outPort.createStream(rtt_roscomm::topic("/chatter"));
+        //add output port to hello_world component
+        this->ports()->addPort("out_port", outPort);
+        outPort.createStream(rtt_roscomm::topic("/chatter"));
 
-  std::cout << "hello_world constructed !" <<std::endl;
+        std::cout << "hello_world constructed !" <<std::endl;
 }
 
-bool hello_world::configureHook(){
-  std::cout << "hello_world configured !" <<std::endl;
-  return true;
+bool hello_world::configureHook()
+{
+        std::cout << "hello_world configured !" <<std::endl;
+        return true;
 }
 
-bool hello_world::startHook(){
-  std::cout << "Hello_world started !" <<std::endl;
-  return true;
+bool hello_world::startHook()
+{
+        std::cout << "Hello_world started !" <<std::endl;
+        return true;
 }
 
-void hello_world::updateHook(){
-  //say hello world to ros node every period.
-  std_msgs::String val;
-  val.data = "hello World, orocos.";
-  outPort.write( val );
-  std::cout << "hello_world executes updateHook !" <<std::endl;
+void hello_world::updateHook()
+{
+        //say hello world to ros node every period.
+        std_msgs::String val;
+        val.data = "hello World, orocos.";
+        outPort.write( val );
+        std::cout << "hello_world executes updateHook !" <<std::endl;
 }
 
-void hello_world::stopHook() {
-  std::cout << "hello_world executes stopping !" <<std::endl;
+void hello_world::stopHook() 
+{
+        std::cout << "hello_world executes stopping !" <<std::endl;
 }
 
-void hello_world::cleanupHook() {
-  std::cout << "hello_world cleaning up !" <<std::endl;
+void hello_world::cleanupHook() 
+{
+        std::cout << "hello_world cleaning up !" <<std::endl;
 }
 
 /*
